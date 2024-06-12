@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main
+      class="p-[20px] md:p-[40px] lg:py-[60px] lg:px-[80px] bg-orange-200 noto-sans"
+    >
+      <div class="flex flex-col gap-8">
+        <div class="title text-center flex flex-col gap-4">
+          <h1 class="text-5xl font-extrabold text-orange-950">
+            Trường đại học Công nghệ thông tin
+          </h1>
+          <h2 class="text-3xl font-bold">
+            Khóa luận tốt nghiệp - Khóa HTTT2020
+          </h2>
+          <h3 class="text-2xl font-semibold text-orange-900">
+            OPTICAL COHERENCE TOMOGRAPHY (OCT) SCAN CLASSIFICATION <br />
+            USING DEEP NEURAL NETWORK
+          </h3>
+        </div>
+        <div
+          class="border-black border-4 border-double p-10 rounded-3xl text-lg flex flex-col gap-8"
+        >
+          <div id="model-selection" class="tab-content active">
+            <form
+              class="flex flex-col gap-5"
+              action="/predict"
+              method="POST"
+              id="ensemble-classification"
+              enctype="multipart/form-data"
+            >
+              <div class="flex gap-4">
+                <label for="ensemble-pic" name="image">Hình ảnh</label>
+                <input type="file" name="image"/>
+              </div>
+              <div>
+                <button
+                  class="bg-orange-300 border-2 text-white border-orange-950 p-2 rounded-xl"
+                  type="submit"
+                  form="ensemble-classification"
+                  value="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="dashed border-orange-950 border-2 border-dashed"></div>
+          <div class="result flex flex-col gap-4">
+            <p>Kết quả</p>
+            <textarea name="" id=""></textarea>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="bg-orange-200 noto-sans flex flex-col gap-4 text-center">
+      <p class="text-2xl text-orange-900 font-bold underline decoration-dotted">
+        Đồ án được thực hiện bởi nhóm sinh viên của trường
+      </p>
+      <p class="text-lg font-medium">TP.HCM, 2024</p>
+    </footer>
+  </body>
+</html>
