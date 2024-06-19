@@ -22,6 +22,8 @@ To utilize the project, follow the steps below:
 The classification results will be displayed below.
 
 ## Installation
-No installation is required for this project. 
+```
+pip install Flask
+```
 
 **Note:** The tool has been deployed and can be accessed at domain.com

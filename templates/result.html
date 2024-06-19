@@ -2,11 +2,45 @@
 <html>
   <head>
     <title>Result</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Result</h1>
-    <p>Predicted class: {{ predicted_class }}</p>
-    <p>Độ chính xác: {{ probabilities }}</p>
-    <p>phân loại: {{ predicted_label }}</p>
+    <h1>Kết quả</h1>
+
+    <table>
+      <tr>
+        <th rowspan="2">Model</th>
+        <th colspan="4">Xác suất từng nhãn</th>
+        <th rowspan="2">Dự đoán</th>
+        <th rowspan="2">Độ chính xác</th>
+      </tr>
+      <tr>
+        {% for label in labels %}
+        <th>{{ label }}</th>
+        {% endfor %}
+      </tr>
+      {% for i in range(outputs|count) %}
+      <tr>
+        <td>{{ model_names[i]}}</td>
+        {% for value in outputs[i] %}
+        <td>{{ value }}</td>
+        {% endfor %}
+        <td>{{ predicts[i][0] }}</td>
+        <td>{{ predicts[i][1] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <h2>Kết hợp hàm Ensemble</h2>
+    <p>Gomperzt: {{ predictions }}</p>
   </body>
 </html>
