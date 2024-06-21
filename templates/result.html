@@ -41,6 +41,17 @@
       {% endfor %}
     </table>
     <h2>Kết hợp hàm Ensemble</h2>
-    <p>Gomperzt: {{ predictions }}</p>
+    <table>
+      <tr>
+        <th>Hàm Ensemble</th>
+        <th>Dự đoán</th>
+      </tr>
+      {% for pred in predictions %}
+      <tr>
+        <td>{{ pred[0] }}</td>
+        <td>{{ pred[1] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
   </body>
 </html>
