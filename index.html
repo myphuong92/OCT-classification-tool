@@ -12,6 +12,10 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
   </head>
   <body>
     <main
@@ -33,7 +37,9 @@
         <div
           class="border-black border-4 border-double p-10 rounded-3xl text-lg flex flex-col gap-8"
         >
-          <h3 class="text-2xl font-semibold text-orange-600">Chọn kiểu phân loại</h3>
+          <h3 class="text-2xl font-semibold text-orange-600">
+            Chọn kiểu phân loại
+          </h3>
           <form
             class="flex flex-col gap-5"
             action="/predict"
@@ -42,179 +48,238 @@
             enctype="multipart/form-data"
             onsubmit="return validateForm()"
           >
-            <!-- model -->
-            <div>
-              <input
-                type="radio"
-                class="w-4 h-4"
-                name="selected"
-                id="model"
-                value="model"
-                onchange="toggleModelGroup()"
-              />
-              <label for="model" class="font-semibold text-orange-900 text-xl"
-                >Model</label
-              >
-              <div
-                id="modelDiv"
-                class="hidden grid grid-cols-4 gap-4 bg-orange-100 border-l-4 border-orange-500 p-5"
-              >
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="modelGroup"
-                    id="Inception-V3"
-                    value="Inception-V3"
-                  />
-                  <label for="Inception-V3" class="text-xl">Inception-V3</label>
-                </div>
-
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="modelGroup"
-                    id="ResNet50"
-                    value="ResNet50"
-                  />
-                  <label for="ResNet50" class="text-xl">ResNet50</label>
-                </div>
-
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="modelGroup"
-                    id="DenseNet201"
-                    value="DenseNet201"
-                  />
-                  <label for="DenseNet201" class="text-xl">DenseNet201</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="modelGroup"
-                    id="EfficientNet-B3"
-                    value="EfficientNet-B3"
-                  />
-                  <label for="EfficientNet-B3" class="text-xl"
-                    >EfficientNet-B3</label
-                  >
-                </div>
+            <!-- Radio button group -->
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <input
+                  type="radio"
+                  class="w-4 h-4"
+                  name="selected"
+                  id="model"
+                  value="model"
+                  checked
+                  onchange="toggleModelGroup()"
+                />
+                <label for="model" class="font-semibold text-orange-900 text-xl"
+                  >Model</label
+                >
               </div>
-            </div>
-
-            <hr />
-            <!-- ensemble -->
-            <div>
-              <input
-                type="radio"
-                class="w-4 h-4"
-                name="selected"
-                id="ensemble"
-                value="ensemble"
-                onchange="toggleModelGroup()"
-              />
-              <label
-                for="ensemble"
-                class="font-semibold text-orange-900 text-xl"
-                >Ensemble Prediction</label
-              >
-
-              <div
-                id="ensembleDiv"
-                class="hidden grid grid-cols-3 gap-4 bg-orange-100 border-l-4 border-orange-500 p-5"
-              >
-                <div>
+              <div>
+                <input
+                  type="radio"
+                  class="w-4 h-4"
+                  name="selected"
+                  id="ensemble"
+                  value="ensemble"
+                  onchange="toggleModelGroup()"
+                />
+                <label
+                  for="ensemble"
+                  class="font-semibold text-orange-900 text-xl"
+                  >Ensemble Prediction</label
+                >
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <!-- <div class="">
                   <input
                     type="checkbox"
                     class="w-4 h-4"
-                    name="ensembleGroup"
-                    id="DefaultGompertz"
-                    value="DefaultGompertz"
+                    id="selectedAll"
+                    value="selectedAll"
+                    onclick="selectedAll()"
                   />
-                  <label for="DefaultGompertz" class="text-xl"
-                    >Gompertz (Go)</label
-                  >
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="ensembleGroup"
-                    id="ExponentialTangent"
-                    value="ExponentialTangent"
-                  />
-                  <label for="ExponentialTangent" class="text-xl"
-                    >Exponential * Tangent (ExTan)
-                  </label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="ensembleGroup"
-                    id="DefaultExponential"
-                    value="DefaultExponential"
-                  />
-                  <label for="DefaultExponential" class="text-xl"
-                    >Exponential (Ex)</label
-                  >
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="ensembleGroup"
-                    id="Gompertz"
-                    value="Gompertz"
-                  />
-                  <label for="Gompertz" class="text-xl"
-                    >Estimated Gompertz (EGo)</label
-                  >
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    name="ensembleGroup"
-                    id="WeightedGompertz"
-                    value="WeightedGompertz"
-                  />
-                  <label for="WeightedGompertz" class="text-xl"
-                    >Estimated Weighted Gompertz (EWGo)</label
-                  >
-                </div>
-
-                <!-- <div>
-                  <input
-                    type="checkbox" class="w-4 h-4"
-                    name="ensembleGroup"
-                    id="NewBurr"
-                    value="NewBurr"
-                  />
-                  <label for="NewBurr">Estimated New Burr (ENB)</label>
+                  <label for="selectedAll">Chọn tất cả</label>
                 </div> -->
+
+                <div class="flex justify-end border-b border-orange-900">
+                  <a
+                    class="cursor-pointer hover:font-semibold flex items-center"
+                    onclick="selectedAll()"
+                  >
+                    <span>
+                      <svg
+                        class="w-4 h-4 mr-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                      >
+                        <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <path
+                          d="M64 80c-8.8 0-16 7.2-16 16V416c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16V96c0-8.8-7.2-16-16-16H64zM0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+                        />
+                      </svg>
+                    </span>
+                    <span>Chọn tất cả</span>
+                  </a>
+                </div>
+
+                <div class="border-b border-orange-900">
+                  <a
+                    class="cursor-pointer hover:font-semibold flex items-center"
+                    onclick="clearAll()"
+                  >
+                    <span>
+                      <svg
+                        class="w-4 h-4 mr-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512"
+                      >
+                        <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <path
+                          d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"
+                        />
+                      </svg>
+                    </span>
+                    <span>Làm sạch</span>
+                  </a>
+                </div>
               </div>
             </div>
-            <hr />
-            <!-- all -->
-            <div>
-              <input
-                type="radio"
-                class="w-4 h-4"
-                name="selected"
-                id="all"
-                value="all"
-                onchange="toggleModelGroup()"
-              />
-              <label for="all" class="font-semibold text-orange-900 text-xl"
-                >Tất cả</label
-              >
+            <!-- model -->
+            <div
+              id="modelDiv"
+              class="grid grid-cols-4 gap-4 bg-orange-100 border-l-4 border-orange-500 p-5"
+            >
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="modelGroup"
+                  id="Inception-V3"
+                  value="Inception-V3"
+                />
+                <label for="Inception-V3" class="text-xl">Inception-V3</label>
+              </div>
+
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="modelGroup"
+                  id="ResNet50"
+                  value="ResNet50"
+                />
+                <label for="ResNet50" class="text-xl">ResNet50</label>
+              </div>
+
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="modelGroup"
+                  id="DenseNet201"
+                  value="DenseNet201"
+                />
+                <label for="DenseNet201" class="text-xl">DenseNet201</label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="modelGroup"
+                  id="EfficientNet-B3"
+                  value="EfficientNet-B3"
+                />
+                <label for="EfficientNet-B3" class="text-xl"
+                  >EfficientNet-B3</label
+                >
+              </div>
             </div>
-            <hr />
+
+            <!-- ensemble -->
+            <div
+              id="ensembleDiv"
+              class="hidden grid grid-cols-2 gap-4 bg-orange-100 border-l-4 border-orange-500 p-5"
+            >
+              <!-- 1 -->
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="ensembleGroup"
+                  id="DefaultGompertz"
+                  value="DefaultGompertz"
+                />
+                <label for="DefaultGompertz" class="text-xl"
+                  >Gompertz (Go)</label
+                >
+              </div>
+              <!-- 2 -->
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="ensembleGroup"
+                  id="DefaultExponential"
+                  value="DefaultExponential"
+                />
+                <label for="DefaultExponential" class="text-xl"
+                  >Exponential (Ex)</label
+                >
+              </div>
+              <!-- 3 -->
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="ensembleGroup"
+                  id="ExponentialTangent"
+                  value="ExponentialTangent"
+                />
+                <label for="ExponentialTangent" class="text-xl"
+                  >Exponential * Tangent (ExTan)
+                </label>
+              </div>
+              <!-- 4 -->
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="ensembleGroup"
+                  id="ExponentialTangentSigmoid"
+                  value="ExponentialTangentSigmoid"
+                />
+                <label for="ExponentialTangentSigmoid" class="text-xl"
+                  >Exponential * TanH * Sigmoid (ExTanSig)</label
+                >
+              </div>
+              <!-- 5 -->
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="ensembleGroup"
+                  id="DefaultMitscherlich"
+                  value="DefaultMitscherlich"
+                />
+                <label for="DefaultMitscherlich" class="text-xl"
+                  >Mitscherlich (Mi)</label
+                >
+              </div>
+              <!-- 6 -->
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="ensembleGroup"
+                  id="Gompertz"
+                  value="Gompertz"
+                />
+                <label for="Gompertz" class="text-xl"
+                  >Estimated Gompertz (EGo)</label
+                >
+              </div>
+              <!-- 7 -->
+              <div>
+                <input
+                  type="checkbox"
+                  class="w-4 h-4"
+                  name="ensembleGroup"
+                  id="Gamma"
+                  value="Gamma"
+                />
+                <label for="Gamma">Modified Gamma (MGa)</label>
+              </div>
+            </div>
             <div class="flex gap-4">
               <label class="font-semibold text-orange-900 text-xl" for="pic"
                 >Hình ảnh</label
@@ -288,22 +353,48 @@
     </footer>
 
     <script>
+      // Hiển thị kiểu phân loại
       function toggleModelGroup() {
         var modelDiv = document.getElementById("modelDiv");
         var ensembleDiv = document.getElementById("ensembleDiv");
 
         if (document.getElementById("model").checked) {
-          modelDiv.classList.remove("hidden");
           ensembleDiv.classList.add("hidden");
-        } else if (document.getElementById("ensemble").checked) {
-          modelDiv.classList.add("hidden");
-          ensembleDiv.classList.remove("hidden");
         } else {
-          modelDiv.classList.add("hidden");
-          ensembleDiv.classList.add("hidden");
+          ensembleDiv.classList.remove("hidden");
         }
       }
 
+      // Chọn tất cả
+      function selectedAll() {
+        var modelCheckboxes = document.getElementsByName("modelGroup");
+        for (var i = 0; i < modelCheckboxes.length; i++) {
+          modelCheckboxes[i].checked = true;
+        }
+        if (document.getElementById("ensemble").checked) {
+          var ensembleCheckboxes = document.getElementsByName("ensembleGroup");
+          for (var i = 0; i < ensembleCheckboxes.length; i++) {
+            ensembleCheckboxes[i].checked = true;
+          }
+        }
+      }
+
+      // Làm sạch
+      function clearAll() {
+        var modelCheckboxes = document.getElementsByName("modelGroup");
+        for (var i = 0; i < modelCheckboxes.length; i++) {
+          modelCheckboxes[i].checked = false;
+        }
+
+        if (document.getElementById("ensemble").checked) {
+          var ensembleCheckboxes = document.getElementsByName("ensembleGroup");
+          for (var i = 0; i < ensembleCheckboxes.length; i++) {
+            ensembleCheckboxes[i].checked = false;
+          }
+        }
+      }
+
+      // Kiểm tra định dạng hình ảnh
       function displayImage(event) {
         var file = event.target.files[0];
 
@@ -330,22 +421,13 @@
         imageLoader.appendChild(imageElement);
       }
 
+      // Kiểm tra validate form request
       function validateForm() {
         var selected = document.querySelector('input[name="selected"]:checked');
-
-        if (!selected) {
-          // Hiển thị phần tử errorAlert nếu nó đang bị ẩn
-          var errorAlert = document.getElementById("errorAlter");
-          errorAlert.style.display = "block";
-          event.target.value = ""; // Xóa giá trị đã chọn
-          var errorMessageElement = document.getElementById("errorMessage");
-          errorMessageElement.textContent = "Vui lòng chọn kiểu phân loại";
-          return false;
-        }
+        var selectedModels = document.querySelectorAll(
+          'input[name="modelGroup"]:checked'
+        );
         if (selected.value == "model") {
-          var selectedModels = document.querySelectorAll(
-            'input[name="modelGroup"]:checked'
-          );
           if (selectedModels.length == 0) {
             // Hiển thị phần tử errorAlert nếu nó đang bị ẩn
             var errorAlert = document.getElementById("errorAlter");
@@ -357,10 +439,19 @@
           }
         }
         if (selected.value == "ensemble") {
-          var selectedModels = document.querySelectorAll(
+          var selectedEnsembles = document.querySelectorAll(
             'input[name="ensembleGroup"]:checked'
           );
-          if (selectedModels.length == 0) {
+          if (selectedModels.length < 2) {
+            // Hiển thị phần tử errorAlert nếu nó đang bị ẩn
+            var errorAlert = document.getElementById("errorAlter");
+            errorAlert.style.display = "block";
+            event.target.value = ""; // Xóa giá trị đã chọn
+            var errorMessageElement = document.getElementById("errorMessage");
+            errorMessageElement.textContent = "Vui lòng chọn ít nhất 2 mô hình để kết hợp";
+            return false;
+          }
+          if (selectedEnsembles.length == 0) {
             // Hiển thị phần tử errorAlert nếu nó đang bị ẩn
             var errorAlert = document.getElementById("errorAlter");
             errorAlert.style.display = "block";

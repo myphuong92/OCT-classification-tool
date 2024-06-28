@@ -58,6 +58,9 @@
         <div
           class="border-black border-4 border-double p-10 rounded-3xl text-lg flex flex-col gap-8"
         >
+          <h2 class="text-2xl font-bold text-orange-600">
+            True label: <span class="text-orange-950">{{ trueLabel }}</span>
+          </h2>
           <h2 class="text-2xl font-bold text-orange-600">Dự đoán từng Model</h2>
           <table>
             <thead class="bg-orange-300 text-2xl text-orange-900 font-semibold">
@@ -66,6 +69,7 @@
                 <th colspan="4">Xác suất từng nhãn</th>
                 <th rowspan="2">Dự đoán</th>
                 <th rowspan="2">Độ chính xác</th> -->
+                <th></th>
                 <th>Model</th>
                 <th>Dự đoán</th>
                 <th>Độ chính xác</th>
@@ -77,14 +81,15 @@
               </tr> -->
             </thead>
             <tbody class="bg-orange-100 text-xl">
-              {% for i in range(outputs|count) %}
+              {% for predict in predicts %}
               <tr>
-                <td>{{ predicts[i][0]}}</td>
+                <td>{{ loop.index }}</td>
+                <td>{{ predict[0]}}</td>
                 <!-- {% for value in outputs[i] %}
-                <td>{{ value }}</td>
+                  <td>{{ value }}</td>
                 {% endfor %} -->
-                <td class="text-center">{{ predicts[i][1] }}</td>
-                <td class="text-center">{{ predicts[i][2] }}</td>
+                <td class="text-center">{{ predict[1] }}</td>
+                <td class="text-center">{{ predict[2] }}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -98,6 +103,7 @@
           <table>
             <thead class="bg-orange-300 text-orange-900 text-2xl font-semibold">
               <tr>
+                <th></th>
                 <th>Hàm Ensemble</th>
                 <th>Dự đoán</th>
               </tr>
@@ -105,6 +111,7 @@
             <tbody class="bg-orange-100 text-xl">
               {% for pred in predictions %}
               <tr>
+                <td>{{ loop.index + 1 }}</td>
                 <td>{{ pred[0] }}</td>
                 <td class="text-center">{{ pred[1] }}</td>
               </tr>

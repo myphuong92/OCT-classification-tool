@@ -84,12 +84,10 @@ def DefaultGompertz(x):
     return 1 - math.exp(-math.exp(-2.0* x))  #Default Gompertz Function
 
 def Gompertz(x):
-    #eta = 1.8293
-    #b = 0.1277
+    #b = 0.473 có trừ 1
     eta = 1.846
-    b = 17.5
+    b = 17.52
     #eta = 0.000001
-    #b = 3.07146
     return 1 - math.exp(-eta * (math.exp(-b *x)))  #Re-paremeter Gompertz Function
 
 def ShiftGompertz(x):
@@ -103,40 +101,74 @@ def ShiftGompertz(x):
 
 def WeightedGompertz(x):
     s = 1.97 #1.87
+    #s= 1.8324379920959473
     l = 0.82275#82275 #
-    #l = 1.8324 #bỏ -1
-    #s= 0.5637 #bỏ -1
-    #s= 1.8755 #
-    #l = 1.837#1.8373 #
+    #l = 0.5636825561523438
+
     return 1 - (1+(s * (math.exp(l*x)-1))/(1+l*s))* math.exp(s * (math.exp(l*x)-1)) # Weighted Gompertz
-    #return 1 - (1+(s * (math.exp(l*x)))/(1+l*s))* math.exp(-s * (math.exp(l*x))) # Weighted Gompertz
+    #return 1 - (math.exp(-l*x))* math.exp(s * (math.exp(-l*x))) # Weighted Gompertz
 
 def DefaultExponential(x):
     return 1 - math.exp(-((x-1)**2)/2.0) # Exponential Function
+
+def DefaultTangent(x):
+    return 1 - math.tanh(((x-1)**2)/2) # DefaultTangent Function
+
+def Sigmoid(x):
+    return 1/(1 + math.exp(-x)) # Sigmoid Function
+
+def DefaultMitscherlich(x):
+    return 2*(1- 2**(x-1)) # DefaultMitscherlich Function
+
+def Mitscherlich(x):
+    a = 1.8855880498886108
+    c = 1.908218264579773
+    a= 10.9839448928833
+    c = 10.998953819274902
+    a= 1.8855880498886108
+    c = 1.7366911172866821
+    b= 1.653203010559082
+    #return a*(1- math.exp(-c * x)) # SigmoMitscherlichid Function
+    return  a*(1- math.exp(-c * (x+b)))
 
 def Exponential(x):
     #l = 1.8992
     #l = 1.8827
     l = 2.425
-    return l * math.exp(-l * x) # Exponential Function
+    l = 1.9082
+    return 1 - math.exp(-l * x) # Exponential Function
 
 def Gamma(x):
-    b = 1.96574
-    #s = 1.96574
-    #b = 1.95654
-    s = 1.95654
-    return 1 - math.exp(b * s * x) # Gamma Function
+    #b = 1.96574
+    #s = 1.95654
+    #return 1 - math.exp(-b * s * x) # Gamma Function
+    return math.gamma(x+0.1)
+
+def Ibrahim(x):
+    l = 1.0853286981582642
+    b = 2.9221911430358887
+    return 1 - (1/(l+1))*(math.exp(-b*x)+l*math.exp(-(b*x)**2)) # Ibrahim Function
+
+def Logistic(x):
+    b0 = 10.775835990905762
+    b1 = 9.2244291305542
+    return 1/(1+ math.exp(-(b0+ b1 *x))) # logistic Function
+
 
 def NewBurr(x):
-    p = 0.0000006156
-    #p = 0.0000009285
-    return (1+ math.exp(- x**3))**(p) # New Burr Function
+    return (1+ math.exp(- x**3))/2 # New Burr Function
 
 def ExponentialGompertz(x):
-    return Exponential(x) * Gompertz(x)
+    return DefaultExponential(x) * Gompertz(x)
 
 def ExponentialTangent(x):
     return (1 - math.exp(-((x-1)**2)/2.0)) * (1 - math.tanh(((x-1)**2)/2)) # exponential tangent
+
+def ExponentialTangentSigmoid(x):
+    return (1 - math.exp(-((x-1)**2)/2.0)) * (1 - math.tanh(((x-1)**2)/2)) * (1/(1 + math.exp(-x))) # exponential tangent sigmoid
+
+def ExponentialSigmoid(x):
+    return (1 - math.exp(-((x-1)**2)/2.0)) * (1/(1 + math.exp(-x))) # exponential sigmoid
 
 def Average(x):
 
@@ -166,14 +198,30 @@ def get_penalty(function):
         return Exponential(0)
     if function =='DefaultExponential':
         return DefaultExponential(0)
+    if function =='DefaultTangent':
+        return DefaultTangent(0)
+    if function =='Sigmoid':
+        return Sigmoid(0)
+    if function =='Mitscherlich':
+        return Mitscherlich(0)
+    if function =='DefaultMitscherlich':
+        return DefaultMitscherlich(0)
+    if function =='Logistic':
+        return Logistic(0)
     if function =='NewBurr':
         return NewBurr(0)
+    if function =='Ibrahim':
+        return Ibrahim(0)
     if function =='Gamma':
         return Gamma(0)
     if function =='ExponentialGompertz':
         return ExponentialGompertz(0)
     if function =='ExponentialTangent':
         return ExponentialTangent(0)
+    if function =='ExponentialTangentSigmoid':
+        return ExponentialTangentSigmoid(0)
+    if function =='ExponentialSigmoid':
+        return ExponentialSigmoid(0)
     if function =='Average':
         return Average(0)
 
@@ -192,16 +240,31 @@ def fuzzy_rank(CF, top, function, penalty):
                     R_L[i][j][k] = WeightedGompertz(CF[i][j][k])
                 if function =='DefaultExponential':
                     R_L[i][j][k] = DefaultExponential(CF[i][j][k])
+                if function =='Sigmoid':
+                    R_L[i][j][k] = Sigmoid(CF[i][j][k])
+                if function =='DefaultMitscherlich':
+                    R_L[i][j][k] = DefaultMitscherlich(CF[i][j][k])
+                if function =='Mitscherlich':
+                    R_L[i][j][k] = Mitscherlich(CF[i][j][k])
+
                 if function =='Exponential':
                     R_L[i][j][k] = Exponential(CF[i][j][k])
+                if function =='Logistic':
+                    R_L[i][j][k] = Logistic(CF[i][j][k])
                 if function =='NewBurr':
                     R_L[i][j][k] = NewBurr(CF[i][j][k])
+                if function =='Ibrahim':
+                    R_L[i][j][k] = Ibrahim(CF[i][j][k])
                 if function =='Gamma':
                     R_L[i][j][k] = Gamma(CF[i][j][k])
                 if function =='ExponentialGompertz':
                     R_L[i][j][k] = ExponentialGompertz(CF[i][j][k])
                 if function =='ExponentialTangent':
                     R_L[i][j][k] = ExponentialTangent(CF[i][j][k])
+                if function =='ExponentialTangentSigmoid':
+                    R_L[i][j][k] = ExponentialTangentSigmoid(CF[i][j][k])
+                if function =='ExponentialSigmoid':
+                    R_L[i][j][k] = ExponentialSigmoid(CF[i][j][k])
                 if function =='Average':
                     R_L[i][j][k] = Average(CF[i][j][k])
 
@@ -224,6 +287,7 @@ def CFS_func(CF, K_L, penalty):
         for i in range(CF.shape[1]):
             idx = np.where(K_L[f][i] == penalty) #default gompertz penalty 0.632
             CF[f][i][idx] = 0
+    #CFS = 1 - np.sum(CF,axis=0)/H
     CFS = 1 - np.sum(CF,axis=0)/H
     return CFS
 

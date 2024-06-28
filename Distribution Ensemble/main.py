@@ -11,10 +11,10 @@ root = args.data_directory
 if not root[-1]=='/':
     root=root+'/'
 
-p1,labels = getfile(root+"efficient_b3")
-p2,_ = getfile(root+"inception_v3")
-p3,_ = getfile(root+"resnet")
-p4,_ = getfile(root+"densenet201")
+p1,labels = getfile(root+"inception_v3")
+p2,_ = getfile(root+"resnet")
+p3,_ = getfile(root+"densenet201")
+p4,_ = getfile(root+"efficient_b3")
 
 #Check utils_ensemble.py to see the "labels" distribution. Change according to the dataset used. By default it has been set for the SARS-COV-2 dataset.
 
