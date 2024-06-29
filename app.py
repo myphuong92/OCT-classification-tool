@@ -220,7 +220,7 @@ def predict():
             for ensemble in ensemble_functions : 
                 if ensemble[0] in selected_ensemble :
                     prediction = Distributions(ensemble[0], top, p)
-                predictions.append([ensemble[1], labels[prediction[0]]])
+                    predictions.append([ensemble[1], labels[prediction[0]]])
         
         return render_template('result.html', trueLabel=trueLabel, labels=labels, outputs=outputs, predicts=predicts, predictions=predictions)
 
