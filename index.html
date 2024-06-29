@@ -327,6 +327,24 @@
 
             <div class="dashed border-orange-950 border-2 border-dashed"></div>
             <div>
+              <input
+                type="radio"
+                class="w-4 h-4"
+                name="zipfileSelected"
+                id="zipfileSelected"
+                value="zipfileSelected"
+              />
+              <label for="zipfileSelected" class="font-semibold text-orange-900 text-xl"
+                >Phân loại nhiều hình ảnh (.zip)</label
+              >
+            </div>
+            <div class="flex gap-4">
+              <label class="font-semibold text-orange-900 text-xl" for="zipfile"
+                >Chọn tệp</label
+              >
+              <input type="file" name="zipfile" id="zipfileInput" />
+            </div>
+            <div>
               <button
                 class="bg-orange-400 border-2 text-white border-orange-950 p-2 rounded-xl"
                 type="submit"
@@ -448,7 +466,8 @@
             errorAlert.style.display = "block";
             event.target.value = ""; // Xóa giá trị đã chọn
             var errorMessageElement = document.getElementById("errorMessage");
-            errorMessageElement.textContent = "Vui lòng chọn ít nhất 2 mô hình để kết hợp";
+            errorMessageElement.textContent =
+              "Vui lòng chọn ít nhất 2 mô hình để kết hợp";
             return false;
           }
           if (selectedEnsembles.length == 0) {

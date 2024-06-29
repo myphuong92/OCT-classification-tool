@@ -7,9 +7,12 @@ from torchvision import transforms
 from PIL import Image
 from sklearn.metrics import *
 import math
+import zipfile
+from torchvision import datasets
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
+# app.config['OUTPUT_CSV'] = 'static/output'
 
 model_dirs = [
     ['Inception-V3', 'static/models/inception_v3-16.h5'],
@@ -33,19 +36,75 @@ def model_predict(img_path, model_path):
         resolution = 299
     if modelName == 'efficientnet-b3-29':
         resolution = 300
-    transform = transforms.Compose([
+    data_transform = transforms.Compose([
         transforms.Resize((resolution, resolution)),
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
     ])
     image = Image.open(img_path).convert('RGB')
-    input_tensor = transform(image)
+    input_tensor = data_transform(image)
     input_batch = input_tensor.unsqueeze(0)
     outputs = model(input_batch)
     prob = torch.nn.functional.softmax(outputs, dim=1)
     
     return prob
 
+def model_predict_file(file_path, model_path):
+    model = torch.load(model_path, map_location=torch.device('cpu'))
+    model.eval()
+    # độ phân giải hình ảnh của từng model
+    modelName = model_path.split('/')[2]
+    resolution = 224
+    if modelName == 'inception_v3-16':
+        resolution = 299
+    if modelName == 'efficientnet-b3-29':
+        resolution = 300
+    
+    data_transform = transforms.Compose([
+        transforms.Resize((resolution, resolution)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean, std)
+    ])
+    image_datasets = {x: datasets.ImageFolder(os.path.join(app.config['UPLOAD_FOLDER'], x), data_transform[x])
+                  for x in ['test']}
+    testloader = torch.utils.data.DataLoader(image_datasets['test'], batch_size=1)
+
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        num = 0
+        temp_array = np.zeros((len(testloader), 4))
+        image_names = []  # Danh sách tên của các hình ảnh
+        for data in testloader:
+            images, labels = data
+            labels=labels.cuda()
+            outputs = model(images.cuda())
+            _, predicted = torch.max(outputs, 1)
+            total += labels.size(0)
+            correct += (predicted == labels.cuda()).sum().item()
+            prob = torch.nn.functional.softmax(outputs, dim=1)
+            temp_array[num] = np.asarray(prob[0].tolist()[0:4])
+            # Lấy tên của hình ảnh và chèn vào danh sách
+            image_names.append(image_datasets['test'].samples[num][0])
+            num += 1
+    return temp_array, labels, image_names, correct, total # kết quả, true label, image name, số dự đoán đúng, tổng số
+# print("Accuracy = ", 100 * correct / total)
+
+# Chèn danh sách tên hình ảnh vào mỗi hàng trong file CSV
+# for i in range(len(testloader)):
+#     row = [image_names[i]] + temp_array[i].tolist()  # Thêm tên hình ảnh vào đầu danh sách xác suất
+#     writer.writerow(row)
+
+# f.close()
+
+    # image = Image.open(img_path).convert('RGB')
+    # input_tensor = transform(image)
+    # input_batch = input_tensor.unsqueeze(0)
+    # outputs = model(input_batch)
+    # prob = torch.nn.functional.softmax(outputs, dim=1)
+    
+    # return prob
 
 # 1 Gompertz (Go) 
 def DefaultGompertz(x):
@@ -179,6 +238,61 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
+        selected_zipfile = request.form['zipfile']
+        if(1): 
+            # Lưu tệp tin ZIP vào thư mục UPLOAD_FOLDER với tên là 'test.zip'
+            zip_file = request.files['zipFile']
+            zip_file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'test.zip'))
+
+            # Giải nén tệp tin ZIP vào thư mục UPLOAD_FOLDER
+            with zipfile.ZipFile(os.path.join(app.config['UPLOAD_FOLDER'], 'test.zip'), 'r') as zip_ref:
+                zip_ref.extractall(app.config['UPLOAD_FOLDER'])
+            
+            # output, labels, image_names, correct, total = model_predict_file (os.path.join(app.config['UPLOAD_FOLDER'], 'test'))
+            outputs = []
+            predicts = []
+            selected_radio = request.form['selected']
+        
+            selected_models = request.form.getlist('modelGroup')
+            # Xử lý danh sách các model được chọn
+            for model in model_dirs :
+                if model[0] in selected_models :
+                    output, labels, image_names, correct, total = model_predict_file (os.path.join(app.config['UPLOAD_FOLDER'], 'test'), model[1])
+                    print(model[1])
+                    print(output)
+                    print(labels)
+                    print(image_names)
+                    print(correct)
+                    print(total)
+            return 
+                    # _, predict = torch.max(output, 1)
+                    # label = labels[predict.item()]
+                    # confidence = output[0][predict.item()].item()
+                    # formatConfidence = "{:.2f}%".format(round(confidence * 100, 2))
+                    # predicts.append([model[0], label, formatConfidence])
+                    # outputs.append(np.asarray(output[0].tolist()[0:4]))
+        
+            p = []
+            for output in outputs:
+                p.append(np.array([output]))
+        
+            print(outputs)
+            print("p: ")
+            print(p)
+            top = 4 #top 'k' classes
+            predictions = []
+            
+            if selected_radio == 'ensemble':
+                selected_ensemble = request.form.getlist('ensembleGroup')
+                # Xử lý danh sách các ensemble được chọn
+                for ensemble in ensemble_functions : 
+                    if ensemble[0] in selected_ensemble :
+                        prediction = Distributions(ensemble[0], top, p)
+                    predictions.append([ensemble[1], labels[prediction[0]]])
+        
+            return render_template('result.html', trueLabel='trueLabel', labels=labels, outputs=outputs, predicts=predicts, predictions=predictions)
+            
+        # Dự đoán 1 hình ảnh
         # Lấy file hình ảnh từ yêu cầu POST
         file = request.files['image']
         # Lưu file vào thư mục UPLOAD_FOLDER
