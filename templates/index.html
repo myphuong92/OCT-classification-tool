@@ -19,17 +19,17 @@
   </head>
   <body>
     <main
-      class="p-[20px] md:p-[40px] lg:py-[60px] lg:px-[80px] bg-orange-200 noto-sans"
+      class="p-[20px] md:p-[40px] lg:py-[60px] lg:px-[80px] bg-slate-50 noto-sans"
     >
       <div class="flex flex-col gap-8">
         <div class="title text-center flex flex-col gap-4">
-          <h1 class="text-5xl font-extrabold text-orange-950">
-            Trường đại học Công nghệ thông tin
+          <h1 class="text-5xl font-extrabold text-indigo-950">
+            Trường Đại học Công nghệ Thông tin
           </h1>
           <h2 class="text-3xl font-bold">
-            Khóa luận tốt nghiệp - Khóa HTTT2020
+            Khóa luận Tốt nghiệp - Khóa HTTT2020
           </h2>
-          <h3 class="text-xl font-semibold text-orange-900">
+          <h3 class="text-xl font-semibold text-indigo-900">
             OPTICAL COHERENCE TOMOGRAPHY (OCT) SCAN CLASSIFICATION <br />
             USING DEEP NEURAL NETWORK
           </h3>
@@ -37,7 +37,7 @@
         <div
           class="border-black border-4 border-double p-10 rounded-3xl text-lg flex flex-col gap-8"
         >
-          <h3 class="text-2xl font-semibold text-orange-600">
+          <h3 class="text-2xl font-semibold text-indigo-600">
             Chọn kiểu phân loại
           </h3>
           <form
@@ -60,8 +60,8 @@
                   checked
                   onchange="toggleModelGroup()"
                 />
-                <label for="model" class="font-semibold text-orange-900 text-xl"
-                  >Model</label
+                <label for="model" class="font-semibold text-indigo-900 text-xl"
+                  >Mô hình</label
                 >
               </div>
               <div>
@@ -75,8 +75,8 @@
                 />
                 <label
                   for="ensemble"
-                  class="font-semibold text-orange-900 text-xl"
-                  >Ensemble Prediction</label
+                  class="font-semibold text-indigo-900 text-xl"
+                  >Kết hợp hàm thứ hạng mờ</label
                 >
               </div>
               <div class="grid grid-cols-2 gap-4">
@@ -91,7 +91,7 @@
                   <label for="selectedAll">Chọn tất cả</label>
                 </div> -->
 
-                <div class="flex justify-end border-b border-orange-900">
+                <div class="flex justify-end border-b border-indigo-900">
                   <a
                     class="cursor-pointer hover:font-semibold flex items-center"
                     onclick="selectedAll()"
@@ -112,7 +112,7 @@
                   </a>
                 </div>
 
-                <div class="border-b border-orange-900">
+                <div class="border-b border-indigo-900">
                   <a
                     class="cursor-pointer hover:font-semibold flex items-center"
                     onclick="clearAll()"
@@ -137,7 +137,7 @@
             <!-- model -->
             <div
               id="modelDiv"
-              class="grid grid-cols-4 gap-4 bg-orange-100 border-l-4 border-orange-500 p-5"
+              class="grid grid-cols-4 gap-4 bg-indigo-100 border-l-4 border-indigo-500 p-5"
             >
               <div>
                 <input
@@ -188,7 +188,7 @@
             <!-- ensemble -->
             <div
               id="ensembleDiv"
-              class="hidden grid grid-cols-2 gap-4 bg-orange-100 border-l-4 border-orange-500 p-5"
+              class="hidden grid grid-cols-2 gap-4 bg-indigo-100 border-l-4 border-indigo-500 p-5"
             >
               <!-- 1 -->
               <div>
@@ -281,7 +281,7 @@
               </div>
             </div>
             <div class="flex gap-4">
-              <label class="font-semibold text-orange-900 text-xl" for="pic"
+              <label class="font-semibold text-indigo-900 text-xl" for="pic"
                 >Hình ảnh</label
               >
               <input
@@ -325,10 +325,10 @@
               </span>
             </div>
 
-            <div class="dashed border-orange-950 border-2 border-dashed"></div>
+            <div class="dashed border-indigo-950 border-2 border-dashed"></div>
             <div>
               <button
-                class="bg-orange-400 border-2 text-white border-orange-950 p-2 rounded-xl"
+                class="bg-indigo-400 border-2 text-white font-bold border-indigo-950 p-2 rounded-xl hover:bg-indigo-500"
                 type="submit"
                 form="ensemble-classification"
                 value="submit"
@@ -337,7 +337,7 @@
               </button>
             </div>
           </form>
-          <!-- <div class="dashed border-orange-950 border-2 border-dashed"></div>
+          <!-- <div class="dashed border-indigo-950 border-2 border-dashed"></div>
           <div class="result flex flex-col gap-4">
             <p>Kết quả</p>
             <textarea name="" id=""></textarea>
@@ -345,11 +345,26 @@
         </div>
       </div>
     </main>
-    <footer class="bg-orange-200 noto-sans flex flex-col gap-4 text-center">
-      <p class="text-xl text-orange-900 font-bold underline decoration-dotted">
-        Đồ án được thực hiện bởi nhóm sinh viên của trường
-      </p>
-      <p class="text-lg font-medium">TP.HCM, 2024</p>
+    <footer class="bg-indigo-200 noto-sans flex flex-col gap-4 text-center">
+      <div class="grid grid-cols-4 gap-4 bg-indigo-100 p-3">
+        <div class="col-span-2">
+          <p
+            class="text-lg text-indigo-900 font-bold underline decoration-dotted"
+          >
+            Phân lớp hình ảnh cắt lớp quang học võng mạc <br> sử dụng phương pháp học sâu
+          </p>
+          <p class="text-sm italic">TP.HCM, tháng 06 năm 2024</p>
+        </div>
+        <div>
+          <p class="text-sm italic text-indigo-900">Nhóm sinh viên thực hiện:</p>
+          <p class="text-base font-medium">Đoàn Tú Quỳnh - 20521825</p>
+          <p class="text-base font-medium">Trần Ngọc Mỹ Phương - 20521779</p>
+        </div>
+        <div>
+          <p class="text-sm italic text-indigo-900">Giảng viên hướng dẫn:</p>
+          <p class="text-base font-medium">ThS. Dương Phi Long</p>
+        </div>
+      </div>
     </footer>
 
     <script>

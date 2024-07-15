@@ -80,7 +80,7 @@ def Gamma(x):
     #b = 1.96574
     #s = 1.95654
     #return 1 - math.exp(-b * s * x) # Gamma Function
-    return math.gamma(x+0.1)
+    return math.gamma(x+1)
 
 # Get penalty với x = 0
 def get_penalty(function):
@@ -179,14 +179,75 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
+        # data_dir = 'D:\\Quynh\\algorithm\\data\\cval'
+        # results = []
+        # i=0
+        # for label in labels:
+        #     label_dir = os.path.join(data_dir, label)
+    
+        #     for filename in os.listdir(label_dir):
+        #         img_path = os.path.join(label_dir, filename)
+        #         result = []
+        #         result.append(filename)
+        #         label_index = labels.index(label)
+        #         result.append(label_index)
+        #         outputs = []
+        #         for model in model_dirs :
+        #             output = model_predict(img_path, model[1])
+        #             _, predict = torch.max(output, 1)
+        #             label = labels[predict.item()]
+        #             outputs.append(np.asarray(output[0].tolist()[0:4]))
+        #             result.append(predict.item())
+        #         p = []
+        #         p3 = []
+        #         j=0
+        #         for output in outputs:
+        #             p.append(np.array([output]))
+        #             if j < 3 :
+        #                 p3.append(np.array([output]))
+        #             j=j+1
+        #         top = 2 #top 'k' classes
+        #         for ensemble in ensemble_functions : 
+        #             prediction = Distributions(ensemble[0], top, p)
+        #             result.append(prediction[0])
+                    
+        #             prediction3 = Distributions(ensemble[0], top, p3)
+        #             result.append(prediction3[0])
+        #         results.append(result)
+        #         print(i)
+        #         i= i + 1
+        # import csv
+        # # Đường dẫn tới tệp tin CSV để lưu
+        # csv_file = 'results.csv'
+
+        # # Mở tệp tin CSV để ghi
+        # with open(csv_file, 'w', newline='') as file:
+        #     writer = csv.writer(file)
+    
+        #     # Ghi tiêu đề cột
+        #     writer.writerow(['Filename', 'Label', 'Inception-V3', 'ResNet50', 'DenseNet201', 'EfficientNet-B3', 
+        #                      'Gompertz (Go)', 'Go3',
+        #                      'Exponential (Ex)', 'Ex3',
+        #                      'Exponential * Tangent (ExTan)', 'ExTan3',
+        #                      'Exponential * TanH * Sigmoid (ExTanSig)', 'ExTanSig',
+        #                      'Mitscherlich  (Mi)', 'Mi3',
+        #                      'Estimated Gompertz (EGo)', 'EGo3',
+        #                      'Modified Gamma (MGa)', 'MGa3'])
+    
+        #     # Ghi từng kết quả vào tệp tin CSV
+        #     for result in results:
+        #         writer.writerow(result)
+        
+        # return render_template('index.html')
+        
         # Lấy file hình ảnh từ yêu cầu POST
         file = request.files['image']
         # Lưu file vào thư mục UPLOAD_FOLDER
         filename = secure_filename(file.filename)
         trueLabel = filename.split("-")[0]
-        filename = trueLabel + '.' + filename.split(".")[-1]
+        extension = filename.split(".")[-1]
         
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], trueLabel + '.' + extension)
         file.save(file_path)
         outputs = []
         predicts = []
@@ -222,7 +283,7 @@ def predict():
                     prediction = Distributions(ensemble[0], top, p)
                     predictions.append([ensemble[1], labels[prediction[0]]])
         
-        return render_template('result.html', trueLabel=trueLabel, labels=labels, outputs=outputs, predicts=predicts, predictions=predictions)
+        return render_template('result.html', image=file_path, trueLabel=trueLabel, filename=filename, labels=labels, outputs=outputs, predicts=predicts, predictions=predictions)
 
 if __name__ == '__main__':
     app.run()

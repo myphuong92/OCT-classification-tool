@@ -21,7 +21,7 @@
       }
 
       .result-area {
-        background-color: aliceblue;
+        background-color: aliceindigo;
       }
       table {
         border-collapse: collapse;
@@ -36,97 +36,149 @@
   </head>
   <body>
     <main
-      class="p-[20px] md:p-[40px] lg:py-[60px] lg:px-[80px] bg-orange-200 noto-sans"
+      class="p-[20px] md:p-[40px] lg:py-[60px] lg:px-[80px] bg-slate-50 noto-sans"
     >
       <div class="flex flex-col gap-8">
         <div class="title text-center flex flex-col gap-4">
-          <h1 class="text-5xl font-extrabold text-orange-950">
-            Trường đại học Công nghệ thông tin
+          <h1 class="text-5xl font-extrabold text-indigo-950">
+            Trường Đại học Công nghệ Thông tin
           </h1>
           <h2 class="text-3xl font-bold">
-            Khóa luận tốt nghiệp - Khóa HTTT2020
+            Khóa luận Tốt nghiệp - Khóa HTTT2020
           </h2>
-          <h3 class="text-2xl font-semibold text-orange-900">
+          <h3 class="text-2xl font-semibold text-indigo-900">
             OPTICAL COHERENCE TOMOGRAPHY (OCT) SCAN CLASSIFICATION <br />
             USING DEEP NEURAL NETWORK
           </h3>
 
-          <h2 class="text-4xl font-semibold text-orange-600 gap-6">
+          <h2 class="text-4xl font-semibold text-indigo-700 gap-6">
             Kết quả dự đoán
           </h2>
         </div>
         <div
-          class="border-black border-4 border-double p-10 rounded-3xl text-lg flex flex-col gap-8"
+          class="border-black border-4 border-double p-5 rounded-3xl text-lg flex flex-col"
         >
-          <h2 class="text-2xl font-bold text-orange-600">
-            True label: <span class="text-orange-950">{{ trueLabel }}</span>
-          </h2>
-          <h2 class="text-2xl font-bold text-orange-600">Dự đoán từng Model</h2>
-          <table>
-            <thead class="bg-orange-300 text-2xl text-orange-900 font-semibold">
-              <tr>
-                <!-- <th rowspan="2">Model</th>
+          <div class="grid grid-cols-3 flex flex-col">
+            <div class="col-span-2">
+              <h2 class="text-xl font-bold text-indigo-700 mb-2">
+                True label: <span class="text-indigo-950">{{ trueLabel }}</span>
+              </h2>
+              <h2 class="text-xl font-bold text-indigo-700 my-2">
+                File name: <span class="text-indigo-950">{{ filename }}</span>
+              </h2>
+              <h2 class="text-xl font-bold text-indigo-700 my-2">
+                Dự đoán từng Model
+              </h2>
+              <table class="my-2">
+                <thead
+                  class="bg-indigo-200 text-xl text-indigo-900 font-semibold"
+                >
+                  <tr>
+                    <!-- <th rowspan="2">Model</th>
                 <th colspan="4">Xác suất từng nhãn</th>
                 <th rowspan="2">Dự đoán</th>
                 <th rowspan="2">Độ chính xác</th> -->
-                <th></th>
-                <th>Model</th>
-                <th>Dự đoán</th>
-                <th>Độ chính xác</th>
-              </tr>
-              <!-- <tr>
+                    {% for predict in predicts %}
+                    <th>{{ predict[0]}}</th>
+                    {% endfor %}
+                    <!-- <th>Dự đoán</th> -->
+                    <!-- <th>Độ tin cậy</th> -->
+                  </tr>
+                  <!-- <tr>
                 {% for label in labels %}
                 <th>{{ label }}</th>
                 {% endfor %}
               </tr> -->
-            </thead>
-            <tbody class="bg-orange-100 text-xl">
-              {% for predict in predicts %}
-              <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ predict[0]}}</td>
-                <!-- {% for value in outputs[i] %}
+                </thead>
+                <tbody class="bg-indigo-100 text-base font-bold">
+                  <tr>
+                    {% for predict in predicts %}
+                    <!-- <td>{{ loop.index }}</td>
+                <td>{{ predict[0]}}</td> -->
+                    <!-- {% for value in outputs[i] %}
                   <td>{{ value }}</td>
                 {% endfor %} -->
-                <td class="text-center">{{ predict[1] }}</td>
-                <td class="text-center">{{ predict[2] }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                    {% if predict[1] == trueLabel %}
+                    <td class="text-lime-600 text-center">{{ predict[1]}}</td>
+                    {% else %}
+                    <td class="text-red-500 text-center">{{ predict[1]}}</td>
+                    {% endif %}
+                    <!-- <td class="text-center">{{ predict[2] }}</td> -->
+                    {% endfor %}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="flex justify-center items-center">
+              <img src="{{ image }}" alt="Image" class="max-h-64" />
+            </div>
+          </div>
 
           <!-- Ensemble -->
           {% if predictions %}
-          <h2 class="text-2xl font-bold text-orange-600">
-            Kết hợp hàm Ensemble
+          <h2 class="text-xl font-bold text-indigo-700 mb-2">
+            Kết hợp hàm thứ hạng mờ
           </h2>
           <table>
-            <thead class="bg-orange-300 text-orange-900 text-2xl font-semibold">
+            <thead class="bg-indigo-200 text-indigo-900 text-xl font-semibold">
               <tr>
                 <th></th>
-                <th>Hàm Ensemble</th>
+                <th>Hàm thứ hạng mờ</th>
                 <th>Dự đoán</th>
               </tr>
             </thead>
-            <tbody class="bg-orange-100 text-xl">
+            <tbody class="bg-indigo-100 text-base">
               {% for pred in predictions %}
               <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ pred[0] }}</td>
-                <td class="text-center">{{ pred[1] }}</td>
+                <td class="font-semibold">{{ loop.index }}</td>
+                <td class="font-semibold">{{ pred[0] }}</td>
+                {% if pred[1] == trueLabel %}
+                <td class="text-lime-600 text-center font-bold">
+                  {{ pred[1] }}
+                </td>
+                {% else %}
+                <td class="text-red-500 text-center font-bold">
+                  {{ pred[1] }}
+                </td>
+                {% endif %}
               </tr>
               {% endfor %}
             </tbody>
           </table>
           {% endif %}
         </div>
+        <a
+          href="{{ url_for('index') }}"
+          class="bg-indigo-400 border-2 text-white font-bold border-indigo-950 p-2 rounded-xl hover:bg-indigo-500 text-center"
+        >
+          QUAY LẠI
+        </a>
       </div>
     </main>
-    <footer class="bg-orange-200 noto-sans flex flex-col gap-4 text-center">
-      <p class="text-2xl text-orange-900 font-bold underline decoration-dotted">
-        Đồ án được thực hiện bởi nhóm sinh viên của trường
-      </p>
-      <p class="text-lg font-medium">TP.HCM, 2024</p>
+
+    <footer class="bg-indigo-200 noto-sans flex flex-col gap-4 text-center">
+      <div class="grid grid-cols-4 gap-4 bg-indigo-100 p-3">
+        <div class="col-span-2">
+          <p
+            class="text-lg text-indigo-900 font-bold underline decoration-dotted"
+          >
+            Phân lớp hình ảnh cắt lớp quang học võng mạc <br />
+            sử dụng phương pháp học sâu
+          </p>
+          <p class="text-sm italic">TP.HCM, tháng 06 năm 2024</p>
+        </div>
+        <div>
+          <p class="text-sm italic text-indigo-900">
+            Nhóm sinh viên thực hiện:
+          </p>
+          <p class="text-base font-medium">Đoàn Tú Quỳnh - 20521825</p>
+          <p class="text-base font-medium">Trần Ngọc Mỹ Phương - 20521779</p>
+        </div>
+        <div>
+          <p class="text-sm italic text-indigo-900">Giảng viên hướng dẫn:</p>
+          <p class="text-base font-medium">ThS. Dương Phi Long</p>
+        </div>
+      </div>
     </footer>
   </body>
 </html>
