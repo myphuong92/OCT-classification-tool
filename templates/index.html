@@ -37,9 +37,53 @@
         <div
           class="border-black border-4 border-double p-10 rounded-3xl text-lg flex flex-col gap-8"
         >
-          <h3 class="text-2xl font-semibold text-indigo-600">
-            Chọn kiểu phân loại
-          </h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="text-2xl font-semibold text-indigo-600">
+            Chọn mô hình phân loại
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+
+            <div class="flex justify-end border-b border-indigo-900">
+              <a
+                class="cursor-pointer hover:font-semibold flex items-center"
+                onclick="selectedAll()"
+              >
+                <span>
+                  <svg
+                    class="w-4 h-4 mr-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                  >
+                    <path
+                      d="M64 80c-8.8 0-16 7.2-16 16V416c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16V96c0-8.8-7.2-16-16-16H64zM0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+                    />
+                  </svg>
+                </span>
+                <span>Chọn tất cả</span>
+              </a>
+            </div>
+
+            <div class="border-b border-indigo-900">
+              <a
+                class="cursor-pointer hover:font-semibold flex items-center"
+                onclick="clearAll()"
+              >
+                <span>
+                  <svg
+                    class="w-4 h-4 mr-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"
+                    />
+                  </svg>
+                </span>
+                <span>Làm sạch</span>
+              </a>
+            </div>
+          </div>
+        </div>
           <form
             class="flex flex-col gap-5"
             action="/predict"
@@ -49,8 +93,8 @@
             onsubmit="return validateForm()"
           >
             <!-- Radio button group -->
-            <div class="grid grid-cols-3 gap-4">
-              <div>
+            <div class="grid grid-cols-2 gap-4">
+              <div hidden>
                 <input
                   type="radio"
                   class="w-4 h-4"
@@ -64,7 +108,7 @@
                   >Mô hình</label
                 >
               </div>
-              <div>
+              <div hidden>
                 <input
                   type="radio"
                   class="w-4 h-4"
@@ -78,60 +122,6 @@
                   class="font-semibold text-indigo-900 text-xl"
                   >Kết hợp hàm thứ hạng mờ</label
                 >
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <!-- <div class="">
-                  <input
-                    type="checkbox"
-                    class="w-4 h-4"
-                    id="selectedAll"
-                    value="selectedAll"
-                    onclick="selectedAll()"
-                  />
-                  <label for="selectedAll">Chọn tất cả</label>
-                </div> -->
-
-                <div class="flex justify-end border-b border-indigo-900">
-                  <a
-                    class="cursor-pointer hover:font-semibold flex items-center"
-                    onclick="selectedAll()"
-                  >
-                    <span>
-                      <svg
-                        class="w-4 h-4 mr-1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"
-                      >
-                        <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                        <path
-                          d="M64 80c-8.8 0-16 7.2-16 16V416c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16V96c0-8.8-7.2-16-16-16H64zM0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM337 209L209 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L303 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
-                        />
-                      </svg>
-                    </span>
-                    <span>Chọn tất cả</span>
-                  </a>
-                </div>
-
-                <div class="border-b border-indigo-900">
-                  <a
-                    class="cursor-pointer hover:font-semibold flex items-center"
-                    onclick="clearAll()"
-                  >
-                    <span>
-                      <svg
-                        class="w-4 h-4 mr-1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512"
-                      >
-                        <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                        <path
-                          d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"
-                        />
-                      </svg>
-                    </span>
-                    <span>Làm sạch</span>
-                  </a>
-                </div>
               </div>
             </div>
             <!-- model -->
